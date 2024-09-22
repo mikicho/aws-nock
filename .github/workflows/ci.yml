@@ -13,12 +13,12 @@ jobs:
         node-version: [22]
     steps:
       - uses: actions/checkout@v4
-      - run: corepack enable
+      - run: corepack enable # https://github.com/actions/setup-node/issues/480#issuecomment-1915448139
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
-      - run: pnpm ci
+      - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm t
       - run: pnpm run test:lint
