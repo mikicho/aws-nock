@@ -1,0 +1,44 @@
+{
+  "name": "@aws-nock/sqs",
+  "type": "module",
+  "version": "0.5.0",
+  "description": "",
+  "main": "./src/index.js",
+  "exports": {
+    ".": {
+      "require": "./cjs/index.cjs",
+      "import": "./src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "types": "./types/index.d.ts",
+  "files": [
+    "src",
+    "types",
+    "cjs",
+    "!**/*.tsbuildinfo"
+  ],
+  "scripts": {
+    "test:watch": "node --inspect --import ./test/global-setup.js ./node_modules/@reporters/testwatch/index.js",
+    "test": "node --import ./test/global-setup.js --test \"**/*.test.js\"",
+    "test:lint": "prettier --check \"./**/*.js\" && eslint . && tsc",
+    "build:cjs": "rollup -c",
+    "build:types": "tsc -p tsconfig.declaration.json",
+    "prepublish": "npm run build:cjs && npm run build:types"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@aws-sdk/client-sqs": "^3.637.0",
+    "@jest/expect": "^29.7.0",
+    "@reporters/testwatch": "^1.4.3",
+    "axios": "^1.7.5",
+    "nock": "^13.5.5"
+  },
+  "peerDependencies": {
+    "nock": ">=13",
+    "@aws-sdk/client-sqs": ">=2.1492.0 || >=3.447.0"
+  },
+  "packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
+}
