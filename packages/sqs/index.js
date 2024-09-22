@@ -14,7 +14,6 @@ export function initSqsNock(queueUrl) {
     : _queueUrl.pathname + '/'
 
   // We can't use persist because it stuck in the same position in the queue forever
-  // I opened a PR to solve it, hopefully :cross_fingers: (https://github.com/nock/nock/pull/2350)
   nock(_queueUrl.origin)
     .matchHeader('x-amz-target', 'AmazonSQS.ReceiveMessage')
     .post(_queueUrl.pathname)
