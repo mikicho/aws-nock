@@ -4,7 +4,7 @@
     "noEmit": false,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "declarationDir": "types"
+    "outDir": "types"
   },
   "include": ["./src/**/*.js"]
 }
