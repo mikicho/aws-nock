@@ -5,7 +5,11 @@ import {
   ReceiveMessageCommand,
   SendMessageCommand,
 } from '@aws-sdk/client-sqs'
-import { initSqsNock, pushMessageAndWait, waitForNewMessage } from '../index.js'
+import {
+  initSqsNock,
+  pushMessageAndWait,
+  waitForNewMessage,
+} from '../src/index.js'
 import { randomUUID } from 'node:crypto'
 import { startConsumer, stopConsumer } from './fixtures/consumer.js'
 import server from './fixtures/server.js'
