@@ -76,8 +76,8 @@ export function waitForNewMessage(signal) {
       .matchHeader('x-amz-target', 'AmazonSQS.SendMessage')
       .post(_queueUrl.pathname)
 
-    interceptor.reply(200, (uri, body) => {
-      const messageBody = JSON.parse(/** @type {string} */ (body)).MessageBody
+    interceptor.reply(200, async (/** @type {Request} */ request) => {
+      const { MessageBody: messageBody } = await request.json()
 
       resolve(JSON.parse(messageBody))
       return sqsSendMessageResponseFactory(messageBody)
@@ -89,7 +89,7 @@ export function waitForNewMessage(signal) {
 
 /**
  * @param {string | undefined} [receiptHandle]
- * @returns {Promise<import('nock').Body>}
+ * @returns {Promise<Record<string, unknown>>}
  */
 function waitForMessageDeleted(receiptHandle) {
   return new Promise((resolve) => {
@@ -98,15 +98,15 @@ function waitForMessageDeleted(receiptHandle) {
       .post(_queueUrl.pathname, (body) => {
         return !receiptHandle || body.ReceiptHandle === receiptHandle
       })
-      .reply(200, (uri, body) => {
-        resolve(body)
+      .reply(200, async (/** @type {Request} */ request) => {
+        resolve(await request.json())
       })
   })
 }
 
 /**
  * @param {string | undefined} [receiptHandle]
- * @returns {Promise<import('nock').Body>}
+ * @returns {Promise<string>}
  */
 function waitForVisibilityChanged(receiptHandle) {
   return new Promise((resolve) => {
@@ -115,9 +115,9 @@ function waitForVisibilityChanged(receiptHandle) {
       .post(_queueUrl.pathname, (body) => {
         return !receiptHandle || body.ReceiptHandle === receiptHandle
       })
-      .reply(200, (uri, body) => {
-        // @ts-expect-error type mismatch, probably Nock's problem
-        resolve(body.ReceiptHandle)
+      .reply(200, async (/** @type {Request} */ request) => {
+        const { ReceiptHandle } = await request.json()
+        resolve(ReceiptHandle)
       })
   })
 }
