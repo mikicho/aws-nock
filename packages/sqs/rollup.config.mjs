@@ -9,6 +9,8 @@ export default {
     format: 'cjs',
     entryFileNames: '[name].cjs',
     preserveModules: true,
+    // nock v15 is ESM-only, so `require('nock')` returns its namespace object
+    interop: 'auto',
   },
   external: ['nock', 'node:crypto'],
 }
